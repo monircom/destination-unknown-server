@@ -84,6 +84,32 @@ async function run() {
       res.send(result);
     })
 
+    // update Tourist Spot
+    app.put('/tourist-spot/:id', async(req, res) =>{
+      const id = req.params.id;
+      const filter = {_id: new ObjectId(id)};
+      const options = {upsert: true};
+      const updatedSpot =  req.body;
+      const spot = {
+        $set: {
+        imageURL: updatedSpot.imageURL,
+        spotName: updatedSpot.spotName,
+        country: updatedSpot.country,
+         location: updatedSpot.location,
+         description: updatedSpot.description,
+         averageCost: updatedSpot.averageCost,
+         seasonality: updatedSpot.seasonality,
+         travelTime: updatedSpot.travelTime,
+         totalVisitorsPerYear: updatedSpot.totalVisitorsPerYear,
+         email: updatedSpot.email,
+         userName: updatedSpot.displayName,
+        }
+      }
+      const result = await touristSpotCollection.updateOne(filter, spot, options);
+      res.send(result);
+
+
+    } )
 
 
     // Send a ping to confirm a successful connection
