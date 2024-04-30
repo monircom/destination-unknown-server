@@ -49,15 +49,23 @@ async function run() {
 
     })
 
-    // getting my list
+    // getting country-wise-card by country
+    app.get("/country-list/:country", async (req, res) => {
+      console.log(req.params.country);
+      const result = await touristSpotCollection.find({ country: req.params.country }).toArray();
+      res.send(result)
+    })
 
-   // app.get('/my-list')
+
+    // getting my list   
 
     app.get("/my-list/:email", async (req, res) => {
       console.log(req.params.email);
       const result = await touristSpotCollection.find({ email: req.params.email }).toArray();
       res.send(result)
     })
+
+
 
     //delete spot for user
     app.delete('/my-list/:id', async(req,res) => {
