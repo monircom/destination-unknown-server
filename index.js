@@ -42,7 +42,6 @@ async function run() {
 
    })
 
-
     app.get('/tourist-spots', async(req, res) => {
        const cursor = touristSpotCollection.find();
        const result = await cursor.toArray();
@@ -50,6 +49,34 @@ async function run() {
 
     })
 
+    // getting my list
+
+   // app.get('/my-list')
+
+    app.get("/my-list/:email", async (req, res) => {
+      console.log(req.params.email);
+      const result = await touristSpotCollection.find({ email: req.params.email }).toArray();
+      res.send(result)
+    })
+
+    //delete spot for user
+    app.delete('/my-list/:id', async(req,res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await touristSpotCollection.deleteOne(query);
+      res.send(result);
+    })
+
+   // get spot for update
+   app.get('/my-list-id/:id', async(req,res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};      
+      const result = await touristSpotCollection.find(query).toArray();
+      res.send(result);
+      //console.log(result);
+   })
+
+    // Add Tourist Spot
     app.post('/tourist-spot', async(req,res) => {
       const newTouristSpot = req.body;
       console.log(newTouristSpot);
@@ -61,7 +88,7 @@ async function run() {
 
     // Send a ping to confirm a successful connection
     //await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    //console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     //await client.close();
